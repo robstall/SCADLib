@@ -1,11 +1,13 @@
 include <plate.scad>
 
-module servoS9001() {
+module servoS9001(screws = false) {
   shaftX = 40.5 - 10.4;
   shaftY = 10;
   plateDepth = 36.1 - 44.1;
-  plateThickness = 29.1-26.1;
+  plateThickness = 29.1-26.6;
   screwInsetX = (55.5 - 50.5) / 2;
+  screwRadius = 4.2164 / 2;
+  screwLength = 10;
   
     union() {
       // Body
@@ -15,10 +17,18 @@ module servoS9001() {
         difference() {
           plate([55.1,18,plateThickness], r=1); 
           // Screw holes
-          translate([screwInsetX, 4, 0]) cylinder(r=2.25, h=plateThickness);
-          translate([screwInsetX, 14, 0]) cylinder(r=2.25, h=plateThickness);
-          translate([55.1 - screwInsetX, 4, 0]) cylinder(r=2.25, h=plateThickness);
-          translate([55.1 - screwInsetX, 14, 0]) cylinder(r=2.25, h=plateThickness);
+          if (screws == false) {
+            translate([screwInsetX, 4, 0]) cylinder(r=2.25, h=plateThickness);
+            translate([screwInsetX, 14, 0]) cylinder(r=2.25, h=plateThickness);
+            translate([55.1 - screwInsetX, 4, 0]) cylinder(r=2.25, h=plateThickness);
+            translate([55.1 - screwInsetX, 14, 0]) cylinder(r=2.25, h=plateThickness);
+          }
+        }
+        if (screws) {
+          translate([screwInsetX, 4, 0]) cylinder(r=screwRadius, h=screwLength);
+          translate([screwInsetX, 14, 0]) cylinder(r=screwRadius, h=screwLength);
+          translate([55.1 - screwInsetX, 4, 0]) cylinder(r=screwRadius, h=screwLength);
+          translate([55.1 - screwInsetX, 14, 0]) cylinder(r=screwRadius, h=screwLength);
         }
       }
       // Tabs on the screw plate
@@ -28,4 +38,13 @@ module servoS9001() {
     }
 }
 
-servoS9001();
+// Test cases
+
+// Just the servo 
+//servoS9001(screws = true);
+
+// Creates a test piece with the right size hole cut out
+//difference() {
+//  color("green") cube([60, 30, 3]);
+//  color("red") translate([10, 25, 29.1+3]) rotate([180, 0, 0]) servoS9001(screws = true, $fn=24);
+//}

@@ -28,6 +28,10 @@ plate([20, 30, 3], r=2, $fn=24);
 
 Example:
 ```
-Coming soon
+// Creates a test piece with the right size hole cut out
+difference() {
+  cube([60, 30, 3]);
+  translate([10, 25, 29.1+3]) rotate([180, 0, 0]) servoS9001(screws = true, $fn=24);
+}
 ```
 
