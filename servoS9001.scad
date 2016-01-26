@@ -35,7 +35,7 @@ module servoS9001(screws = false, oversize = 0) {
         }
       }
       // Tabs on the screw plate
-      translate([-4.5,9,29.1]) plate([49.5,2,1], r=0.5); 
+      translate([-4.5-oversize/2,9-oversize/2,29.1]) plate([49.5+oversize,2+oversize,1], r=0.5); 
       // Shaft
       translate([shaftX, shaftY, 36.1]) cylinder(r=3, h=8);
     }
@@ -45,7 +45,13 @@ module servoS9001(screws = false, oversize = 0) {
 // Test cases
 
 // Just the servo 
-//servoS9001(screws = true, oversize = 1);
+//servoS9001();
+
+// Servo from plate up
+//difference() {
+//  color("green") servoS9001();
+//  color("red") translate([-40, -15, -50-29.1+26.6]) cube([60, 30, 50]);
+//}
 
 // Creates a test piece with the right size hole cut out
 //difference() {
