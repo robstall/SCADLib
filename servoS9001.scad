@@ -1,19 +1,22 @@
 include <plate.scad>
 
-module servoS9001(screws = false) {
+module servoS9001(screws = false, oversize = 0) {
   shaftX = 40.5 - 10.4;
   shaftY = 10;
+  plateZ = 26.6;
   plateDepth = 36.1 - 44.1;
   plateThickness = 29.1-26.6;
   screwInsetX = (55.5 - 50.5) / 2;
   screwRadius = 4.2164 / 2;
   screwLength = 10;
   
+  translate([-shaftX, -shaftY, -(plateZ + plateThickness)]) {
     union() {
       // Body
-      plate([40.5,20,36.1], r=1); 
+      translate([-oversize/2, -oversize/2, 0])
+        plate([40.5 + oversize,20 + oversize, 36.1], r=1); 
       // Screw Plate
-      translate([-7.5,1,26.6]) {
+      translate([-7.5,1,plateZ]) {
         difference() {
           plate([55.1,18,plateThickness], r=1); 
           // Screw holes
@@ -36,15 +39,16 @@ module servoS9001(screws = false) {
       // Shaft
       translate([shaftX, shaftY, 36.1]) cylinder(r=3, h=8);
     }
+  }
 }
 
 // Test cases
 
 // Just the servo 
-//servoS9001(screws = true);
+//servoS9001(screws = true, oversize = 1);
 
 // Creates a test piece with the right size hole cut out
 //difference() {
 //  color("green") cube([60, 30, 3]);
-//  color("red") translate([10, 25, 29.1+3]) rotate([180, 0, 0]) servoS9001(screws = true, $fn=24);
+//  color("red") translate([40, 15, 3]) rotate([180, 0, 0]) servoS9001(screws = true, oversize = 1, $fn=24);
 //}

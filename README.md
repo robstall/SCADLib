@@ -22,16 +22,20 @@ plate([20, 30, 3], r=2, $fn=24);
 
 ### servoS9001.scad
 
-"Work in progress" model of a Parallax 900 servo (https://www.parallax.com/product/900-00008). 
-* At the time of this writing I've not completed it and have not tested it to ensure the dimensions are correct.
+"Model of a Parallax 900 servo (https://www.parallax.com/product/900-00008). 
+* The default rendering has the shaft centered on x=0, y=0 with the top of the mounting plate at z=0.
 * To when printing a chassis, the servo assembly can be added to your design in the appropriate location with "screws=true" set. This whole unit can then be "differenced" out of the model leaving only the mounting holes.
+* The oversize parameter can be used to make the body 1mm oversized to ensure the server will fit through a "differenced" hole in a model.
 
 Example:
 ```
-// Creates a test piece with the right size hole cut out
+// Draw a servo with screw holes in its nominal size
+servo59001()
+
+// Creates a test piece with the hole, 1mm oversize,  cut out
 difference() {
-  cube([60, 30, 3]);
-  translate([10, 25, 29.1+3]) rotate([180, 0, 0]) servoS9001(screws = true, $fn=24);
+  color("green") cube([60, 30, 3]);
+  color("red") translate([40, 15, 3]) rotate([180, 0, 0]) servoS9001(screws = true, oversize = 1, $fn=24);
 }
 ```
 
