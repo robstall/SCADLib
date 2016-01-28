@@ -39,3 +39,16 @@ difference() {
 }
 ```
 
+### batteries.scad
+
+Collection of battery related items.
+
+* aaBattery() - A AA battery.
+* aa4BatteryHolder() - Battery holder with 4 AA batteries and tab for the leads.
+* pb2sBattery() - PBS2 Credit Card 2000mAh battery.
+
+### sensors.scad
+
+Collection of sensors
+
+* hcsr04Ultrasonic() - HC-SR04 ultrasonic proximity detector. 
