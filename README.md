@@ -52,3 +52,7 @@ Collection of battery related items.
 Collection of sensors
 
 * hcsr04Ultrasonic() - HC-SR04 ultrasonic proximity detector. 
+
+### rpi\_bplus\_v2.scad
+
+* rpi\_bplus() - Raspberry Pi B+ v2
