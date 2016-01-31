@@ -1,5 +1,7 @@
 include <plate.scad>
 
+function servoS9001Size() = [40.5, 20, 36.1];
+
 module servoS9001(screws = false, oversize = 0) {
   shaftX = 40.5 - 10.4;
   shaftY = 10;
@@ -45,7 +47,7 @@ module servoS9001(screws = false, oversize = 0) {
 // Test cases
 
 // Just the servo 
-//servoS9001();
+servoS9001();
 
 // Servo from plate up
 //difference() {

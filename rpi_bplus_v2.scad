@@ -1,18 +1,20 @@
 include <plate.scad>
 
-rpi_bplus();
+function rpi_bplusSize() = [85, 56, 1.4+15];
 
-module rpi_bplus() {
+module rpi_bplus(show_dongle = 0) {
   off_mounting_hole = 3.5;
   
   board = [85, 56, 1.4];
-  usb = [10, 10, 10];
-  eth = [13, 10, 10];
-  audio = [5, 10, 5];
-  hdmi = [10, 5, 4];
-  m_usb = [5, 4, 3];
-  m_sd = [10, 10, 3];
-  gpio = [50, 5, 5];
+  usb = [17, 13.2, 15];
+  eth = [21, 16, 14];
+  audio = [7, 15, 7];
+  hdmi = [15, 11.5, 6.5];
+  m_usb = [7.3, 5.6, 3];
+  m_sd = [17, 13, 1];
+  gpio = [2.54 * 20, 5, 2.54];
+  cam = [3, 20.5, 4.5];
+  dongle = [22, 16.5, 8];
   
   x = 0;
   y = 1;
@@ -44,6 +46,24 @@ module rpi_bplus() {
     cube(m_usb);
   translate([0, 28-m_sd[y]/2,-m_sd[z]])
     cube(m_sd);
-  translate([2.75+29-gpio[x]/2, 2.75+49-gpio[y]/2, board[z]])
+  gx = 2.75+29-gpio[x]/2;
+  gy = 2.75+49-gpio[y]/2;
+  gz = board[z];
+  translate([gx, gy, gz])
     cube(gpio);
+  // The pins.
+  for (i = [0:19]) {
+    px = gx + 2.54/4 + 2.54*i;
+    translate([px, gy + 2.54/4, gz+gpio[z]])
+      cube([0.65,0.65,3.2]);
+    translate([px, gy + 2.54 + 2.54/4, gz+gpio[z]])
+      cube([0.65,0.65,3.2]);
+  }
+  
+  if (show_dongle > 0) {
+      translate([board[x]+2, 29-dongle[y]/2, board[z]+1])
+        cube([dongle[x], dongle[y], dongle[z]]);
+  }
 }
+
+rpi_bplus(show_dongle = 0);
