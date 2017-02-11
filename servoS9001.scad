@@ -2,7 +2,7 @@ include <plate.scad>
 
 function servoS9001Size() = [40.5, 20, 36.1];
 
-module servoS9001(screws = false, oversize = 0) {
+module servoS9001(screws = false, oversize = 0, horn="none") {
   shaftX = 40.5 - 10.4;
   shaftY = 10;
   plateZ = 26.6;
@@ -36,18 +36,34 @@ module servoS9001(screws = false, oversize = 0) {
           translate([55.1 - screwInsetX, 14, 0]) cylinder(r=screwRadius, h=screwLength);
         }
       }
+      tabheight = oversize > 0 ? 5 : 1;
       // Tabs on the screw plate
-      translate([-4.5-oversize/2,9-oversize/2,29.1]) plate([49.5+oversize,2+oversize,1], r=0.5); 
+      translate([-4.5-oversize/2,9-oversize/2,29.1]) plate([49.5+oversize,2+oversize,tabheight], r=0.5); 
       // Shaft
       translate([shaftX, shaftY, 36.1]) cylinder(r=3, h=8);
+      
+      // Horn
+      if (horn == "coupler") {
+        translate([shaftX, shaftY, 37.1]) coupler();
+      }
     }
+  }
+}
+
+module coupler() {
+  len = .5 * 25.4;
+  od = .42 * 25.4;
+  id = .25 * 25.4;
+  difference() {
+    cylinder(h=len,d=od);
+    translate([0,0,-1]) cylinder(h=len+2,d=id);
   }
 }
 
 // Test cases
 
 // Just the servo 
-servoS9001();
+servoS9001(horn="coupler");
 
 // Servo from plate up
 //difference() {
