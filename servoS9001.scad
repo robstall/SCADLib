@@ -17,6 +17,9 @@ module servoS9001(screws = false, oversize = 0, horn="none") {
       // Body
       translate([-oversize/2, -oversize/2, 0])
         plate([40.5 + oversize,20 + oversize, 36.1], r=1); 
+      
+      translate([shaftX, shaftY, plateZ+9.5]) cylinder(d=14.5, h=1.5);
+      
       // Screw Plate
       translate([-7.5,1,plateZ]) {
         difference() {
@@ -40,11 +43,11 @@ module servoS9001(screws = false, oversize = 0, horn="none") {
       // Tabs on the screw plate
       translate([-4.5-oversize/2,9-oversize/2,29.1]) plate([49.5+oversize,2+oversize,tabheight], r=0.5); 
       // Shaft
-      translate([shaftX, shaftY, 36.1]) cylinder(r=3, h=8);
+      translate([shaftX, shaftY, 37.6]) cylinder(r=3, h=8);
       
       // Horn
       if (horn == "coupler") {
-        translate([shaftX, shaftY, 37.1]) coupler();
+        translate([shaftX, shaftY, 38.6]) coupler();
       }
     }
   }
@@ -63,7 +66,7 @@ module coupler() {
 // Test cases
 
 // Just the servo 
-servoS9001(horn="coupler");
+servoS9001(horn = "coupler");
 
 // Servo from plate up
 //difference() {

@@ -37,7 +37,7 @@ module pb2sBattery(usbplug = false, center=false) {
   translate([offX, offY, 0]) {
     difference() {
       cube(d);
-      translate([-13, 13, 0]) rotate([0,0,-45]) cube([30,11,7]);
+      translate([-13, 13, -1]) rotate([0,0,-45]) cube([30,11,9]);
     }
     if (usbplug) {
       translate([16.5-6, d[1], 0.5])
