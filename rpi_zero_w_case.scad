@@ -11,6 +11,7 @@ topThickness = 1.6;    // Case top thickness
 standoffHeight = 1.2;  // Case standoff height
 gap = 0.4;             // Gap between pi and inside walls
 wallHeight = 8;       // Height off wall not counting bottom
+upperStandoffHeight = wallHeight-standoffHeight-pzCirBrdDim[2]-0.4;
 
 connectorDim = [50.6,5,2.3]; // Connector for pins
 
@@ -52,7 +53,11 @@ module top(center = true) {
   
   translate(t) {
     // The top plate
-    rcube(d, r=cornerRadius);
+    difference() {
+      rcube(d, r=cornerRadius);
+      translate([pwrCenterX-5, 1, 1]) linear_extrude(height=1) text("PWR", size=3);
+      translate([usbCenterX-4.4, 1, 1]) linear_extrude(height=1) text("USB", size=3);
+    }
     
     // The bits that extend into the cutouts
     hdmi = [hdmiWidth-1, wallThickness+0.2, lipHeight];
@@ -72,11 +77,19 @@ module top(center = true) {
       difference() {
         rcube(lip, r=pzCnrRad+gap);
         translate([2, 2, -0.01]) 
-          rcube([lip[0]-2*thk, lip[1]-2*thk, lip[2]+.02], r=  pzCnrRad+gap-2);
-        translate([pinCenterX-pinWidth/2-thk, d[1]-8, -.01])
-          cube([pinWidth, 5, lip[2]+.02]);
+          rcube([lip[0]-2*thk, lip[1]-2*thk, lip[2]+.02], r=    pzCnrRad+gap-2);
+          translate([pinCenterX-pinWidth/2-thk, d[1]-8, -.01])
+            cube([pinWidth, 5, lip[2]+.02]);
       }
     }
+    
+    // Stand offs
+    so = pzStdOffOffset + wallThickness + gap;
+    zus = -upperStandoffHeight;
+    translate([so, so, zus]) upperStandOff();
+    translate([bottomDim[0]-so, so, zus]) upperStandOff();
+    translate([so, bottomDim[1]-so, zus]) upperStandOff();
+    translate([bottomDim[0]-so, bottomDim[1]-so, zus]) upperStandOff();
   }
 }
 
@@ -97,6 +110,10 @@ module bottom(center = true) {
 module standOff() {
   cylinder(d=pzStdOffDia+2, h=standoffHeight);
   //cylinder(d=2.5, h=standoffHeight+pzCirBrdDim[2]*1.5);
+}
+
+module upperStandOff() {
+  cylinder(d=pzStdOffDia+2, h=upperStandoffHeight);
 }
 
 module walls(center = true) {
