@@ -29,7 +29,7 @@ camWidth = 16.7 + 2;
 pinCenterX = pzCirBrdDim[0]/2 + wallThickness + gap;
 pinWidth = 50.6 + 2;
 
-drawRpi();
+//drawRpi();
 color("red") drawBottom();
 color("yellow") drawWalls();
 color("blue") drawTop();
@@ -57,6 +57,7 @@ module top(center = true) {
       rcube(d, r=cornerRadius);
       translate([pwrCenterX-5, 1, 1]) linear_extrude(height=1) text("PWR", size=3);
       translate([usbCenterX-4.4, 1, 1]) linear_extrude(height=1) text("USB", size=3);
+      translate([0, 0, -.1]) vents();
     }
     
     // The bits that extend into the cutouts
@@ -90,6 +91,18 @@ module top(center = true) {
     translate([bottomDim[0]-so, so, zus]) upperStandOff();
     translate([so, bottomDim[1]-so, zus]) upperStandOff();
     translate([bottomDim[0]-so, bottomDim[1]-so, zus]) upperStandOff();
+    
+    // Pinguard
+    translate([pinCenterX-pinWidth/2-1, bottomDim[1], 0]) topPinGuard();
+    
+  }
+}
+
+module vents() {
+  vy = bottomDim[1]-16;
+  offx = (bottomDim[0] - 10*6) / 2 + 1.5;
+  for (n = [0:9]) {
+    translate([n*6+offx, ((bottomDim[1]-vy)/2), 0]) rcube([3, vy, topThickness+.2], r=1.5);
   }
 }
 
@@ -98,12 +111,18 @@ module bottom(center = true) {
   t = center ? [-d[0]/2,-d[1]/2,0] : [0,0,0];
   
   translate(t) {
+    // plate
     rcube(d, r=cornerRadius);
+    
+    // stand offs
     so = pzStdOffOffset + wallThickness + gap;
     translate([so, so, bottomThickness]) standOff();
     translate([bottomDim[0]-so, so, bottomThickness]) standOff();
     translate([so, bottomDim[1]-so, bottomThickness]) standOff();
     translate([bottomDim[0]-so, bottomDim[1]-so, bottomThickness]) standOff();
+    
+    // guard
+    translate([pinCenterX-pinWidth/2-1, d[1], bottomThickness]) bottomPinGuard();
   }
 }
 
@@ -129,6 +148,17 @@ module walls(center = true) {
     }
     //color("red") wallCutouts();
   }
+}
+
+module bottomPinGuard() {
+  difference() {
+    cube([pinWidth+2, 7, wallHeight]);
+    translate([1, -.001, pzCirBrdDim[2]]) cube([pinWidth, 7.002, wallHeight]);
+  }
+}
+
+module topPinGuard() {
+    cube([pinWidth+2, 7, topThickness]);
 }
 
 module wallCutouts() {
